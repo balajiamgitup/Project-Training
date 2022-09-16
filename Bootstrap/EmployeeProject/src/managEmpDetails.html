@@ -10,6 +10,7 @@
       href="node_modules/bootstrap/dist/css/bootstrap.css"
     />
     <link rel="stylesheet" href="./style.css" />
+    <link href="empDetails.html" rel="import" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
@@ -131,7 +132,7 @@
         <div class="col-sm-8 text-left">
           <h1>Manage Employee</h1>
 
-          <form class="text-start">
+          <form class="text-start" onsubmit="sConsole(event)">
             <div class="form-row">
               <div class="col form-group">
                 <label for="validationDefault01" class="form-label">
@@ -161,9 +162,8 @@
                   required
                 />
               </div>
-              <div class="form-row">
-                <!-- form-group end.// -->
-                <div class="form-group col-md-6">
+          
+                <!-- <div class="form-group col-md-6">
                   <label for="validationDefault03" class="form-label"
                     >Projects</label
                   >
@@ -178,9 +178,9 @@
                     <option>TSG</option>
                     <option>DataBase</option>
                   </select>
-                </div>
+                </div> -->
                 <!-- form-group end.// -->
-              </div>
+              </div> -->
               <div class="col form-group">
                 <label for="validationDefault04" class="form-label">
                   Salary
@@ -195,9 +195,37 @@
                   required
                 />
               </div>
+              <!-- <div class="col form-group">
+                <label for="validationDefault04" class="form-label">
+                  Salary
+                </label>
+                <input
+                  type="text"
+                  pattern="[0-9]{1,20}"
+                  title="Salary should be in digits "
+                  class="form-control"
+                  placeholder=""
+                  id="validationDefault04"
+                  required
+                />
+              </div> -->
+              <div class="col form-group">
+                <label for="validationDefault04" class="form-label">
+                 image
+                </label>
+                <input
+                  type="text"
+                  pattern="[0-9]{1,20}"
+                  title="Salary should be in digits "
+                  class="form-control"
+                  placeholder=""
+                  id="validationDefault3"
+                  required
+                />
+              </div>
             </div>
             <!-- form-row end.// -->
-            <div class="form-group col-md-6">
+            <!-- <div class="form-group col-md-6">
               <label for="validationDefault05" class="form-label"
                 >Location</label
               >
@@ -212,10 +240,10 @@
                 <option>Kochi</option>
                 <option>Banglore</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">
-                Submit
+              <button type="submit" class="btn btn-primary btn-block" onclick="userCreate()">
+                Add
               </button>
             </div>
             <!-- form-group// -->
@@ -232,7 +260,62 @@
         </footer>
       </div>
     </div>
+    <script>
+      function sConsole(event) {
+        event.preventDefault();
+        var data = document.getElementById("validationDefault02");
+        console.log(data.value);
+      }
+      //*********************************************
+      function userCreate() {
+        console.log("create in another page"+  document.getElementById("validationDefault01").value);
+        const id = document.getElementById("validationDefault01").value;
+        const employee_name = document.getElementById(
+          "validationDefault02"
+        ).value;
+        const image = document.getElementById("validationDefault3").value;
+        const employee_salary = document.getElementById(
+          "validationDefault04"
+        ).value;
+        const employee_age = document.getElementById(
+          "validationDefault05"
+        ).value;
 
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "http://dummy.restapiexample.com/api/v1/create");
+        xhttp.setRequestHeader(
+          "Content-Type",
+          "application/json;charset=UTF-8"
+        );
+        xhttp.send(
+          JSON.stringify({
+            id: id,
+            employee_name: employee_name,
+            employee_salary: employee_salary,
+            employee_age: employee_age,
+            profile_image: image,
+          })
+        );
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            const objects = JSON.parse(this.responseText);
+            console.log(Swal.fire(objects["message"]));
+            // buildTable(Swal.fire(objects["message"]));
+
+            var Table = document.getElementById("mytable");
+            Table.innerHTML = "";
+            // myList.splice(0, myList.length);
+            myList.push(objects.data);
+            console.log("data", myList);
+            buildTable(myList);
+          } else {
+            var row = `<h2>Loading</h2>`;
+            table.innerHTML += row;
+          }
+        };
+      }
+    </script>
+    <script src="empDetails.html"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
   </body>
 </html>
