@@ -1,0 +1,32 @@
+var pro = require("prompt-sync")();
+
+	
+
+var l =parseInt( pro("enter l :"));
+var r=parseInt(  pro("enter r :"));
+
+function main(){
+    var count=0;
+    for(var j=l+1;j<=r;j++){
+  for(var i=l;i<=r;i++){
+     
+          var x=i/10;
+          var y = Math.trunc(x); 
+         // console.log(y)
+      
+        //console.log(j);
+        var j1=i/10;
+        var j2 = Math.trunc(j1); 
+          var z=j%10;
+        //  console.log(y + " "+ z);
+          if(z==y && j2==y){
+                 console.log(i + "  " +j);
+        //console.log(count)
+           count++;
+          	
+          }
+      }
+  }
+
+}
+main();
